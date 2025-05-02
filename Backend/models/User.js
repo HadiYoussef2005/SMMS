@@ -1,4 +1,7 @@
+import Id from './Id';
+
 class User {
+    #id;
     #firstName;
     #lastName;
     #email;
@@ -8,6 +11,8 @@ class User {
     #isAdmin;
     #isSuperAdmin;
     constructor(firstName, lastName, email, password, isAdmin, isSuperAdmin) {
+        let id = new Id();
+        this.#id = id.getId();
         this.#firstName = firstName;
         this.#lastName = lastName;
         this.#email = email;
@@ -16,6 +21,9 @@ class User {
         this.#isSuperAdmin = isSuperAdmin;
         this.#notifications = [];
         this.#submissionHistory = [];
+    }
+    getId(){
+        return this.#id;
     }
     getUsername() {
         return `${this.#firstName} ${this.#lastName}`;

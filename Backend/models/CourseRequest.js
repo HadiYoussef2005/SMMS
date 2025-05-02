@@ -1,11 +1,19 @@
+import Id from './Id';
+
 class CourseRequest{
+    #id;
     #author;
     #status;
     #course;
     constructor(author, course){
+        let id = new Id();
+        this.#id = id.getId();
         this.#author = author;
         this.#course = course;
         this.#status = "Under Review";
+    }
+    getId(){
+        return this.#id;
     }
     getAuthor(){
         return this.#author;
