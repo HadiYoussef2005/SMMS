@@ -1,3 +1,5 @@
+import Encryptor from '../services/Encryptor.js';
+
 class User {
     #firstName;
     #lastName;
@@ -6,59 +8,78 @@ class User {
     #notifications;
     #submissionHistory;
     #isAdmin;
-    #isSuperAdmin;
-    constructor(firstName, lastName, email, password, isAdmin, isSuperAdmin) {
+
+    constructor(firstName, lastName, email, hashedPassword, isAdmin) {
         this.#firstName = firstName;
         this.#lastName = lastName;
         this.#email = email;
-        this.#password = password;
+        this.#password = hashedPassword; 
         this.#isAdmin = isAdmin;
-        this.#isSuperAdmin = isSuperAdmin;
         this.#notifications = [];
         this.#submissionHistory = [];
     }
+
+    static async create(firstName, lastName, email, rawPassword, isAdmin) {
+        const encryptor = new Encryptor();
+        const hashedPassword = await encryptor.hashPassword(rawPassword);
+        return new User(firstName, lastName, email, hashedPassword, isAdmin);
+    }
+
     getUsername() {
         return `${this.#firstName} ${this.#lastName}`;
     }
-    setUsername(firstName, lastName) {
-        this.#firstName = firstName;
-        this.#lastName = lastName;
-    }
+
     getEmail() {
         return this.#email;
     }
-    setEmail(email) {
-        this.#email = email;
+
+    getPassword() {
+        return this.#password;
     }
-    setPassword(password) {
-        this.#password = password;
+
+    async setPassword(rawPassword) {
+        const encryptor = new Encryptor();
+        this.#password = await encryptor.hashPassword(rawPassword);
     }
+
     getNotifications() {
         return this.#notifications;
     }
+
     addNotification(notification) {
         this.#notifications.push(notification);
     }
+
     clearNotifications() {
         this.#notifications = [];
     }
+
     getSubmissionHistory() {
         return this.#submissionHistory;
     }
+
     addSubmission(submissionId) {
         this.#submissionHistory.push(submissionId);
     }
-    isAdmin(){
+
+    isAdmin() {
         return this.#isAdmin;
     }
-    setIsAdmin(isAdmin){
+
+    setIsAdmin(isAdmin) {
         this.#isAdmin = isAdmin;
     }
-    getIsSuperAdmin(){
-        return this.#isSuperAdmin;
-    }
-    setIsSuperAdmin(isSuperAdmin){
-        this.#isSuperAdmin = isSuperAdmin;
+
+    toObject() {
+        return {
+            username: this.getUsername(),
+            email: this.getEmail(),
+            password: this.getPassword(),
+            isAdmin: this.getIsAdmin(),
+            notifications: this.getNotifications(),
+            submissionHistory: this.getSubmissionHistory(),
+        };
     }
 }
+
 export default User;
