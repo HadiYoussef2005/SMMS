@@ -1,6 +1,7 @@
 import Encryptor from '../services/Encryptor.js';
 
 class User {
+    #id;
     #firstName;
     #lastName;
     #email;
