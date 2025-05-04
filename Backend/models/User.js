@@ -84,7 +84,7 @@ class User {
     }
     toObject() {
         return {
-            id: this.getId(),
+            _id: this.getId(),
             username: this.getUsername(),
             email: this.getEmail(),
             password: this.getPassword(),
