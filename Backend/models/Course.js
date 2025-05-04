@@ -1,4 +1,4 @@
-import Id from './Id';
+import Id from '../services/Id';
 
 class Course {
     #id;

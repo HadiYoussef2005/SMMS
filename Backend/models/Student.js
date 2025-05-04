@@ -1,6 +1,6 @@
 import User from './User';
 import Encryptor from '../services/Encryptor';
-import Id from './Id';
+import Id from '../services/Id';
 
 class Student extends User {
     #section;

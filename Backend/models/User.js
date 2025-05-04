@@ -1,5 +1,5 @@
 import Encryptor from '../services/Encryptor.js';
-import Id from './Id.js'; 
+import Id from '../services/Id.js'; 
 
 class User {
     #id;
