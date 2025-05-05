@@ -1,4 +1,5 @@
-import { connectToMongo } from '../db/mongoClient';
+import { connectToMongo } from '../db/mongoClient.js';
+import UserFactory from '../factories/UserFactory.js';
 
 class UserAdapter {
     constructor() {
@@ -19,7 +20,7 @@ class UserAdapter {
     async deleteUserById(id) {
         try {
             const db = await connectToMongo();
-            const result = await db.collection(this.collectionName).deleteOne({ id: id });
+            const result = await db.collection(this.collectionName).deleteOne({ _id: id });
             return result.deletedCount;
         } catch (err) {
             console.error('Failure to delete user:', err.message);
@@ -31,7 +32,7 @@ class UserAdapter {
         try {
             const db = await connectToMongo();
             const result = await db.collection(this.collectionName).updateOne(
-                { id: user.getId() },
+                { _id: user.getId() }, 
                 { $set: user.toObject() }
             );
             return result.modifiedCount;
@@ -45,8 +46,8 @@ class UserAdapter {
         try {
             const db = await connectToMongo();
             const projection = includePassword ? {} : { password: 0 };
-            const result = await db.collection(this.collectionName).findOne({ id: id }, { projection });
-            return result;
+            const result = await db.collection(this.collectionName).findOne({ _id: id }, { projection });
+            return UserFactory.buildUserFromData(result);
         } catch (err) {
             console.error('Failure in finding user by ID:', err.message);
             throw err;
@@ -57,8 +58,8 @@ class UserAdapter {
         try {
             const db = await connectToMongo();
             const projection = includePassword ? {} : { password: 0 };
-            const result = await db.collection(this.collectionName).findOne({ email: email }, { projection });
-            return result;
+            const result = await db.collection(this.collectionName).findOne({ email }, { projection });
+            return UserFactory.buildUserFromData(result);
         } catch (err) {
             console.error('Failure in finding user by email:', err.message);
             throw err;
@@ -67,7 +68,8 @@ class UserAdapter {
 
     async findAllUsers() {
         const db = await connectToMongo();
-        return await db.collection(this.collectionName).find({}).toArray();
+        const results = await db.collection(this.collectionName).find({}).toArray();
+        return results.map(doc => UserFactory.buildUserFromData(doc));
     }
 
     async userExistsByEmail(email) {
