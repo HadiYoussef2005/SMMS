@@ -6,8 +6,8 @@ class Student extends User {
     #section;
     #isYearRep;
     #courses;
-    constructor(id, firstName, lastName, email, password, isAdmin, section, isYearRep){
-        super(id, firstName, lastName, email, password, isAdmin);
+    constructor(id, firstName, lastName, email, password, isAdmin, type, section, isYearRep){
+        super(id, firstName, lastName, email, password, isAdmin, type);
         this.#section = section;
         this.#isYearRep = isYearRep;
         this.#courses = [];
@@ -16,7 +16,7 @@ class Student extends User {
         const encryptor = new Encryptor();
         const hashedPassword = await encryptor.hashPassword(rawPassword);
         const id = new Id();
-        return new Student(id.getId(), firstName, lastName, email, hashedPassword, isAdmin, section, isYearRep);
+        return new Student(id.getId(), firstName, lastName, email, hashedPassword, isAdmin, "Student", section, isYearRep);
     }
     getSection(){
         return this.#section;

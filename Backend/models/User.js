@@ -10,8 +10,9 @@ class User {
     #notifications;
     #submissionHistory;
     #isAdmin;
+    #type;
 
-    constructor(id, firstName, lastName, email, hashedPassword, isAdmin) {
+    constructor(id, firstName, lastName, email, hashedPassword, isAdmin, type = "User") {
         this.#id = id;
         this.#firstName = firstName;
         this.#lastName = lastName;
@@ -20,6 +21,7 @@ class User {
         this.#isAdmin = isAdmin;
         this.#notifications = [];
         this.#submissionHistory = [];
+        this.#type = type;
     }
 
     static async create(firstName, lastName, email, rawPassword, isAdmin) {
@@ -27,6 +29,12 @@ class User {
         const hashedPassword = await encryptor.hashPassword(rawPassword);
         const id = new Id();
         return new User(id.getId(), firstName, lastName, email, hashedPassword, isAdmin);
+    }
+    getType(){
+        return this.#type;
+    }
+    setType(type){
+        this.#type = type;
     }
     getId(){
         return this.#id;
@@ -85,6 +93,7 @@ class User {
     toObject() {
         return {
             _id: this.getId(),
+            type: this.getType(),
             username: this.getUsername(),
             email: this.getEmail(),
             password: this.getPassword(),
