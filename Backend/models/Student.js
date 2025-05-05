@@ -45,6 +45,7 @@ class Student extends User {
     toObject() {
         return {
             _id: this.getId(),
+            type: this.getType(),
             username: this.getUsername(),
             email: this.getEmail(),
             password: this.getPassword(), 
@@ -54,9 +55,6 @@ class Student extends User {
             courses: this.getCourses(),
             notifications: this.getNotifications(),
             submissionHistory: this.getSubmissionHistory(),
-            courses: this.getCourses(),
-            section: this.getSection(),
-            isYearRep: this.#isYearRep()
         };
     }
     
