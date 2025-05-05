@@ -81,6 +81,62 @@ class UserAdapter {
         const user = await this.findUserById(id, false);
         return !!user;
     }
+    async addNotification(userId, notification) {
+        try {
+            const db = await connectToMongo();
+            const result = await db.collection(this.collectionName).updateOne(
+                { _id: userId },
+                { $push: { notifications: notification } }
+            );
+            return result.modifiedCount > 0;
+        } catch (err) {
+            console.error('Failed to add notification:', err.message);
+            throw err;
+        }
+    }
+
+    async removeNotification(userId, notification) {
+        try {
+            const db = await connectToMongo();
+            const result = await db.collection(this.collectionName).updateOne(
+                { _id: userId },
+                { $pull: { notifications: notification } }
+            );
+            return result.modifiedCount > 0;
+        } catch (err) {
+            console.error('Failed to remove notification:', err.message);
+            throw err;
+        }
+    }
+
+    async clearNotifications(userId) {
+        try {
+            const db = await connectToMongo();
+            const result = await db.collection(this.collectionName).updateOne(
+                { _id: userId },
+                { $set: { notifications: [] } }
+            );
+            return result.modifiedCount > 0;
+        } catch (err) {
+            console.error('Failed to clear notifications:', err.message);
+            throw err;
+        }
+    }
+
+    async getNotifications(userId) {
+        try {
+            const db = await connectToMongo();
+            const user = await db.collection(this.collectionName).findOne(
+                { _id: userId },
+                { projection: { notifications: 1 } }
+            );
+            return user ? user.notifications || [] : null;
+        } catch (err) {
+            console.error('Failed to retrieve notifications:', err.message);
+            throw err;
+        }
+    }
+
 }
 
 export default UserAdapter;

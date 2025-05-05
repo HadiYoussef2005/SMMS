@@ -28,30 +28,6 @@ class CourseAdapter {
         const db = await connectToMongo();
         return await db.collection(this.collectionName).deleteOne({ _id: id });
     }
-
-    async addMidtermToCourse(courseId, midterm) {
-        const db = await connectToMongo();
-        return await db.collection(this.collectionName).updateOne(
-            { _id: courseId },
-            { $push: { midterms: midterm } }
-        );
-    }
-
-    async removeMidtermFromCourse(courseId, midtermId) {
-        const db = await connectToMongo();
-        return await db.collection(this.collectionName).updateOne(
-            { _id: courseId },
-            { $pull: { midterms: { id: midtermId } } }
-        );
-    }
-
-    async updateMidterm(courseId, midtermId, updatedMidterm) {
-        const db = await connectToMongo();
-        return await db.collection(this.collectionName).updateOne(
-            { _id: courseId, "midterms.id": midtermId },
-            { $set: { "midterms.$": updatedMidterm } }
-        );
-    }
 }
 
 export default CourseAdapter;
