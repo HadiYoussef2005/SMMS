@@ -1,4 +1,5 @@
 import { connectToMongo } from '../db/mongoClient.js';
+import { ObjectId } from 'mongodb';
 
 class MidtermAdapter {
     constructor() {
@@ -9,12 +10,7 @@ class MidtermAdapter {
         try {
             const db = await connectToMongo();
             const midtermData = {
-                _id: midterm.getId?.() || undefined,
-                courseCode: midterm.getCourseCode(),
-                date: midterm.getDate(),
-                author: midterm.getAuthor(),
-                duration: midterm.getDuration(),
-                disciplineTag: midterm.getDisciplineTag?.() || null,
+                ...midterm.toObject(),
                 createdAt: new Date()
             };
             const result = await db.collection(this.collectionName).insertOne(midtermData);
@@ -28,7 +24,7 @@ class MidtermAdapter {
     async getMidtermById(id) {
         try {
             const db = await connectToMongo();
-            return await db.collection(this.collectionName).findOne({ _id: id });
+            return await db.collection(this.collectionName).findOne({ _id: new ObjectId(id) });
         } catch (err) {
             console.error('Error retrieving midterm by ID:', err.message);
             throw err;
@@ -69,7 +65,7 @@ class MidtermAdapter {
         try {
             const db = await connectToMongo();
             const result = await db.collection(this.collectionName).updateOne(
-                { _id: id },
+                { _id: new ObjectId(id) },
                 { $set: updatedFields }
             );
             return result.modifiedCount;
@@ -82,7 +78,7 @@ class MidtermAdapter {
     async deleteMidterm(id) {
         try {
             const db = await connectToMongo();
-            const result = await db.collection(this.collectionName).deleteOne({ _id: id });
+            const result = await db.collection(this.collectionName).deleteOne({ _id: new ObjectId(id) });
             return result.deletedCount;
         } catch (err) {
             console.error('Error deleting midterm:', err.message);
