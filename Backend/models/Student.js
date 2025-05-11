@@ -1,6 +1,6 @@
 import User from './User.js';
-import Encryptor from '../services/Encryptor';
-import Id from '../services/Id';
+import Encryptor from '../services/Encryptor.js';
+import Id from '../services/Id.js';
 
 class Student extends User {
     #section;

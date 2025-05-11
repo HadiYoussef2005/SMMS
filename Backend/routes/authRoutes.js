@@ -7,7 +7,7 @@ import Student from '../models/Student.js';
 import EmailSender from '../services/EmailSender.js';
 import VerificationToken from '../models/VerificationToken.js';
 import VerificationTokenAdapter from '../adapters/VerificationTokenAdapter.js';
-import emailRateLimiter from '../middlewares/rateLimiter.js';
+import {emailRateLimiter} from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 const userAdapter = new UserAdapter();

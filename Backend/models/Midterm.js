@@ -1,5 +1,3 @@
-import Id from '../services/Id';
-
 class Midterm {
     #date;
     #courseCode;
