@@ -17,5 +17,4 @@ class VerificationToken {
         };
     }
 }
-
 export default VerificationToken;
