@@ -1,9 +1,12 @@
-const express = require('express');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const dotenv = require('dotenv');
-const app = express();
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import dotenv from 'dotenv';
 import { startTokenCleanupScheduler } from './services/TokenCleanupScheduler.js';
+
+dotenv.config();
+
+const app = express();
 
 startTokenCleanupScheduler();
 
