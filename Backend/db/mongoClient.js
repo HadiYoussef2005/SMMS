@@ -1,13 +1,15 @@
 import { MongoClient } from 'mongodb';
 
-const uri = process.env.MONGO_URI;
-const client = new MongoClient(uri)
-let db;
+let client, db;
 
- export async function connectToMongo(){
-    if (!db){
-        await client.connect();
-        db = client.db('SMMS');
+export async function connectToMongo(){
+  if (!client) {
+    if (!process.env.MONGO_URI) {
+      throw new Error('MONGO_URI not defined');
     }
-    return db;
+    client = new MongoClient(process.env.MONGO_URI);
+    await client.connect();
+    db = client.db('SMMS');
+  }
+  return db;
 }

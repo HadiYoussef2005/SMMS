@@ -1,5 +1,5 @@
 import { connectToMongo } from '../db/mongoClient.js';
-import UserFactory from '../factories/UserFactory.js';
+import UserFactory from '../services/UserFactory.js';
 
 class UserAdapter {
     constructor() {
