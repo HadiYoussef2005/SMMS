@@ -6,5 +6,5 @@ export const emailRateLimiter = rateLimit({
     keyGenerator: (req) => req.body.email || req.ip, 
     message: { message: "Too many requests, please try again later." },
     standardHeaders: true,
-    legacyHeaders: false,c
+    legacyHeaders: false,
 });
