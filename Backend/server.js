@@ -3,6 +3,9 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const dotenv = require('dotenv');
 const app = express();
+import { startTokenCleanupScheduler } from './services/TokenCleanupScheduler.js';
+
+startTokenCleanupScheduler();
 
 app.use(cors({
     origin: 'http://localhost:5173',
